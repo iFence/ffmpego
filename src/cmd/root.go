@@ -15,6 +15,18 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+var version = "2024.1-0.1"
+
+//输入文件
+var inputFile string
+//输出文件
+var outputFile string
+
+func init(){
+	rootCmd.Version = "2024.1-0.1"
+	rootCmd.SetVersionTemplate("v2024.1-0.1 created by yulei<vyulei97@gmail.com>")
+}
+
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)

@@ -20,8 +20,6 @@ var cutCmd = &cobra.Command{
 	},
 }
 
-var inputFile string
-var outputFile string
 var from string
 var to string
 var format string
@@ -29,9 +27,10 @@ var q string
 var verbose bool
 
 func init() {
-	cutCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "显示详细信息")
-	cutCmd.Flags().StringVarP(&inputFile, "inputFile", "i", "", "输入文件")
-	cutCmd.Flags().StringVarP(&outputFile, "outputFile", "o", "", "输出文件")
+	cutCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "裁剪时显示详细信息")
+	cutCmd.Flags().StringVarP(&inputFile, "inputFile", "i", "", "输入文件路径(必须)")
+	cutCmd.MarkFlagRequired("inputFile")
+	cutCmd.Flags().StringVarP(&outputFile, "outputFile", "o", "", "输出文件路径")
 	cutCmd.Flags().StringVarP(&from, "from", "", "00:00:00", "裁剪开始时间,格式：HH:mm:ss")
 	cutCmd.Flags().StringVarP(&to, "to", "", "", "裁剪结束时间,格式：HH:mm:ss")
 	cutCmd.Flags().StringVarP(&format, "format", "f", "mp4", "文件格式")
@@ -67,7 +66,7 @@ func Cut() {
 
 	args := []string{"-i", inputFile, "-ss", from, "-to", to, "-f", format, "-c:v", "copy", "-c:a", "copy", "-q:v", q, "-y", outputFile}
 	cmd := exec.Command("ffmpeg", args...)
-	
+
 	if verbose {
 		cmd.Stderr = os.Stderr
 	}
